@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Core.Repositry
 {
-    internal class StudentRepositry
+    internal class StudentRepository
     {
     }
 }

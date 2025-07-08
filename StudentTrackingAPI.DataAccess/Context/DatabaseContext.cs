@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace JopPortalAPI.DataAccess.Context
 {
-    public partial class DatabaseContext: DbContext
+    public partial class DatabaseContext : DbContext
     {
-		private readonly IConfiguration _configuration;
-		private readonly string? _connectionString;
-		public DatabaseContext(IConfiguration configuration)//,string Connectionstring)
-		{
-			_configuration = configuration;
-			_connectionString = _configuration.GetConnectionString("SqlConnection");
-		}
-		public IDbConnection CreateConnection()
-			=> new SqlConnection(_connectionString);
+        private readonly IConfiguration _configuration;
+        private readonly string? _connectionString;
+        public DatabaseContext(IConfiguration configuration)//,string Connectionstring)
+        {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("SqlConnection");
+        }
+        public IDbConnection CreateConnection()
+            => new SqlConnection(_connectionString);
 
-	}
+    }
 }
