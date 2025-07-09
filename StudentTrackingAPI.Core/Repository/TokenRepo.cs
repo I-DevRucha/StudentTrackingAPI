@@ -29,7 +29,7 @@ namespace Token
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
 
-            parameters.Add("@Id", user.Id, DbType.Guid);
+            parameters.Add("@Id", user.Id!, DbType.Guid);
             parameters.Add("@UserId", user.UserId, DbType.String);
             parameters.Add("@LoginId", user.LoginId, DbType.String);
             parameters.Add("@Token", user.Token, DbType.String);
