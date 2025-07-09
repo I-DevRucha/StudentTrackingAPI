@@ -1,12 +1,13 @@
 ﻿using Context;
 using DocumentFormat.OpenXml.Wordprocessing;
+using StudentTrackingAPI.DataAccess.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StudentTrackingAPI.Core.ModelDtos;
-using StudentTrackingAPI.DataAccess.Context;
+using StudentTrackingAPI.DataAccess;
 using StudentTrackingAPI.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

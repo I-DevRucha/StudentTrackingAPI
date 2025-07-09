@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JopPortalAPI.DataAccess.Context
+namespace StudentTrackingAPI.DataAccess.Context
 {
     public partial class DatabaseContext : DbContext
     {

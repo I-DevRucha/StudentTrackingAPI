@@ -10,4 +10,8 @@
     <Folder Include="APIServices\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StudentTrackingAPI.Core\StudentTrackingAPI.Core.csproj" />
+  </ItemGroup>
+
 </Project>
