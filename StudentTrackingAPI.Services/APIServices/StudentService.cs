@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using StudentTrackingAPI.Core.ModelDtos;
+using StudentTrackingAPI.Core.Repository;
+using StudentTrackingAPI.Core.Repositry;
+using StudentTrackingAPI.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +11,17 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Services.APIServices
 {
-    internal class StudentService
+    public class StudentService: IStudentService
     {
+        StudentRepository _studentRepository;
+        public StudentService(StudentRepository authRepository)
+        {
+            _studentRepository = authRepository;
+        }
+        public async Task<IActionResult> AddStuent(StudentDto model)
+        {
+            return await _studentRepository.AddStuent(model);
+
+        }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using StudentTrackingAPI.Core.ModelDtos;
+using StudentTrackingAPI.Services.Interfaces;
 
 namespace StudentTrackingAPI.Controllers
 {
@@ -12,13 +13,13 @@ namespace StudentTrackingAPI.Controllers
     {
         public IConfiguration _configuration;
         private readonly ILogger<StudentController> _logger;
-        //public readonly ICandidateService _candidateService;
+        public readonly IStudentService _studentService;
 
-        public StudentController(ILogger<StudentController> logger, IConfiguration configuration /*ICandidateService candidateService*/)
+        public StudentController(ILogger<StudentController> logger, IConfiguration configuration , IStudentService studentService)
         {
             _logger = logger;
             _configuration = configuration;
-          //  _candidateService = candidateService;
+            _studentService = studentService;
         }
 
         [HttpPost("AddStuent")]
@@ -35,12 +36,12 @@ namespace StudentTrackingAPI.Controllers
                 {
                     user.BaseModel.OperationType = "Insert";
                 }
-                else
-                {
-                    user.um_updateddate = DateTime.Now;
-                    user.BaseModel.OperationType = "Update";
-                }
-                dynamic createduser = await _employeemaster.AddStuent(user);
+                //else
+                //{
+                //    user.um_updateddate = DateTime.Now;
+                //    user.BaseModel.OperationType = "Update";
+                //}
+                dynamic createduser = await _studentService.AddStuent(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
 
                 return Ok();

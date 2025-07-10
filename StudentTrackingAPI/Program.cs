@@ -6,6 +6,8 @@ using StudentTrackingAPI.Services.ApiServices;
 using StudentTrackingAPI.Services.Interfaces;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using StudentTrackingAPI.Services.APIServices;
+using StudentTrackingAPI.Core.Repositry;
 
 
 
@@ -70,6 +72,7 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddDbContext<DatabaseContext>(opts => opts.UseSqlServer(builder.Configuration["ConnectionStrings:prod"]));
 
 builder.Services.AddScoped<IAuthService, AuthService>().AddScoped<AuthRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentRepository>();
 
 
 builder.Services.AddHttpClient();

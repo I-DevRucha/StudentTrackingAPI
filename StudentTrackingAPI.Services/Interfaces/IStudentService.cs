@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Services.Interfaces
 {
-    public  class IStudentService
+    public interface IStudentService
     {
         public Task<IActionResult> AddStuent(StudentDto model);
     }
