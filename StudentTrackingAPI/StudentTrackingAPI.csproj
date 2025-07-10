@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StudentTrackingAPI.Core\StudentTrackingAPI.Core.csproj" />
     <ProjectReference Include="..\StudentTrackingAPI.DataAccess\StudentTrackingAPI.DataAccess.csproj" />
     <ProjectReference Include="..\StudentTrackingAPI.Services\StudentTrackingAPI.Services.csproj" />
   </ItemGroup>
