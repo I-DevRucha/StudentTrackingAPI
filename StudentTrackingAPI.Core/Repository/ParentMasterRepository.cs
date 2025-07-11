@@ -144,6 +144,7 @@ namespace StudentTrackingAPI.Core.Repository
             parameters.Add("@Address", user.Address, DbType.String);
             parameters.Add("@AadharNo", user.AadharNo, DbType.String);
             parameters.Add("@EmailId", user.EmailId, DbType.String);
+            parameters.Add("@@ChildName", user.ChildName, DbType.String);
             parameters.Add("@WatchId", user.WatchId, DbType.String);
             parameters.Add("@City", user.City, DbType.String);
             parameters.Add("@State", user.State, DbType.String);
