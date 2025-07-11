@@ -40,7 +40,7 @@ namespace StudentTrackingAPI.Core.Repositry
                     {
                         Outcome = outcome,
                         Data = Model,
-                      //  UserId = model.UserId
+                        UserId = model.UserId
                     };
 
                     if (outcomeId == 1)
@@ -105,7 +105,7 @@ namespace StudentTrackingAPI.Core.Repositry
                     {
                         Outcome = outcome,
                         Data = Model,
-                       // UserId = model.UserId
+                        UserId = model.UserId
                     };
 
                     if (outcomeId == 1)

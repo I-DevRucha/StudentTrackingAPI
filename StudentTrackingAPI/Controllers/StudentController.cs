@@ -4,11 +4,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Data;
 using StudentTrackingAPI.Core.ModelDtos;
 using StudentTrackingAPI.Services.Interfaces;
+using common;
 
 namespace StudentTrackingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ExampleFilterAttribute]
+
     public class StudentController : ControllerBase
     {
         public IConfiguration _configuration;
