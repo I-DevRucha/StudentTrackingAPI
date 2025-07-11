@@ -22,6 +22,26 @@ namespace StudentTrackingAPI.Controllers
             _studentService = studentService;
         }
 
+        public async Task<IActionResult> GetAll([FromQuery] StudentDto user)
+        {
+            try
+            {
+
+                if (user.BaseModel == null)
+                {
+                    user.BaseModel = new BaseModel();
+                }
+
+                user.BaseModel.OperationType = "GetAllStudents";
+                var createduser = await _studentService.StudentMaster(user);
+                return createduser;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         [HttpPost("AddStuent")]
         public async Task<IActionResult> AddStuent([FromBody] StudentDto user)
         {
@@ -32,7 +52,7 @@ namespace StudentTrackingAPI.Controllers
                     user.BaseModel = new BaseModel();
                 }
 
-                if (user.Id == null)
+                if (user.UserId != null)
                 {
                     user.BaseModel.OperationType = "Insert";
                 }
@@ -44,7 +64,7 @@ namespace StudentTrackingAPI.Controllers
                 dynamic createduser = await _studentService.AddStuent(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
 
-                return Ok();
+                return createduser;
             }
             catch (Exception)
             {

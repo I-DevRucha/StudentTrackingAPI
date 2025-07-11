@@ -23,5 +23,10 @@ namespace StudentTrackingAPI.Services.APIServices
             return await _studentRepository.AddStuent(model);
 
         }
+        public async Task<IActionResult> StudentMaster(StudentDto model)
+        {
+            return await _studentRepository.StudentMaster(model);
+
+        }
     }
 }

@@ -76,6 +76,7 @@ builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentR
 
 
 builder.Services.AddHttpClient();
+
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 
