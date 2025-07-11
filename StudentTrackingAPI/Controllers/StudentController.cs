@@ -55,11 +55,14 @@ namespace StudentTrackingAPI.Controllers
                     user.BaseModel = new BaseModel();
                 }
 
-                if (user.UserId != null)
+                if (user.UserId == null)
                 {
                     user.BaseModel.OperationType = "Insert";
-                }             
-                
+                }
+                else
+                {
+                    user.BaseModel.OperationType = "Update";
+                }
                 dynamic createduser = await _studentService.AddStuent(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
 
@@ -71,8 +74,8 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
-        [HttpPost("GetStuent")]
-        public async Task<IActionResult> GetStuent([FromBody] StudentDto user)
+        [HttpGet("GetStuent")]
+        public async Task<IActionResult> GetStuent([FromQuery] StudentDto user)
         {
             try
             {
@@ -84,31 +87,6 @@ namespace StudentTrackingAPI.Controllers
                 if (user.UserId != null)
                 {
                     user.BaseModel.OperationType = "GetStudent";
-                }
-                dynamic createduser = await _studentService.AddStuent(user);
-                var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
-
-                return createduser;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        [HttpPost("EditStuent")]
-        public async Task<IActionResult> EditStuent([FromBody] StudentDto user)
-        {
-            try
-            {
-                if (user.BaseModel == null)
-                {
-                    user.BaseModel = new BaseModel();
-                }
-
-                if (user.UserId != null)
-                {
-                    user.BaseModel.OperationType = "Update";
                 }
                 dynamic createduser = await _studentService.AddStuent(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
