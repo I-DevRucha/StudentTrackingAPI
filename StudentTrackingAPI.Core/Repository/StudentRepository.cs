@@ -155,7 +155,7 @@ namespace StudentTrackingAPI.Core.Repositry
 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
-            parameters.Add("@UserId", user.UserId, DbType.Guid);
+            parameters.Add("@UserId", user.UserId, DbType.String);
             parameters.Add("@StudentName", user.StudentName, DbType.String);        
             parameters.Add("@Class", user.Class, DbType.String);        
             parameters.Add("@ParentName", user.ParentName, DbType.String);        

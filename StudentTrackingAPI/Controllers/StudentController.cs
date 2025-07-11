@@ -68,6 +68,31 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
+        [HttpPost("GetStuent")]
+        public async Task<IActionResult> GetStuent([FromBody] StudentDto user)
+        {
+            try
+            {
+                if (user.BaseModel == null)
+                {
+                    user.BaseModel = new BaseModel();
+                }
+
+                if (user.UserId != null)
+                {
+                    user.BaseModel.OperationType = "GetStudent";
+                }
+                dynamic createduser = await _studentService.AddStuent(user);
+                var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
+
+                return createduser;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         [HttpPost("EditStuent")]
         public async Task<IActionResult> EditStuent([FromBody] StudentDto user)
         {
