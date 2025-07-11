@@ -18,6 +18,7 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public string? MobileNo { get; set; }
         public string? Address { get; set; }
         public string? AadharNo { get; set; }
+        public string? EmailId { get; set; }
         public string? WatchId { get; set; }
         public DateTime? Createddate { get; set; }
         public DateTime? Updateddate { get; set; }
