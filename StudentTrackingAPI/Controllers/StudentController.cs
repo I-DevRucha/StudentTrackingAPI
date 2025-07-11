@@ -55,7 +55,7 @@ namespace StudentTrackingAPI.Controllers
                     user.BaseModel = new BaseModel();
                 }
 
-                if (user.UserId == null)
+                if (user.Id == null)
                 {
                     user.BaseModel.OperationType = "Insert";
                 }

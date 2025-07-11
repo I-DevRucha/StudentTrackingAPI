@@ -74,6 +74,8 @@ builder.Services.AddDbContext<DatabaseContext>(opts => opts.UseSqlServer(builder
 
 builder.Services.AddScoped<IAuthService, AuthService>().AddScoped<AuthRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentRepository>();
+builder.Services.AddScoped<IParameterMasterService, ParameterMasterService>().AddScoped<ParameterMasterRepository>();
+builder.Services.AddScoped<IParameterValueMasterService, ParameterValueMasterService>().AddScoped<ParameterValueMasterRepository>();
 
 
 builder.Services.AddHttpClient();
