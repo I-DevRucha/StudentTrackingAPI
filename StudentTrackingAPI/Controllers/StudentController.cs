@@ -21,7 +21,7 @@ namespace StudentTrackingAPI.Controllers
             _configuration = configuration;
             _studentService = studentService;
         }
-        [HttpGet]
+        [HttpGet("GetAllStudent")]
         public async Task<IActionResult> GetAll([FromQuery] StudentDto user)
         {
             try
@@ -52,15 +52,15 @@ namespace StudentTrackingAPI.Controllers
                     user.BaseModel = new BaseModel();
                 }
 
-                if (user.UserId != null)
+                if (user.UserId == null)
                 {
                     user.BaseModel.OperationType = "Insert";
                 }
-                //else
-                //{
-                //    user.um_updateddate = DateTime.Now;
-                //    user.BaseModel.OperationType = "Update";
-                //}
+                else
+                {
+                    user.updateddate = DateTime.Now;
+                    user.BaseModel.OperationType = "Update";
+                }
                 dynamic createduser = await _studentService.AddStuent(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
 
@@ -70,6 +70,18 @@ namespace StudentTrackingAPI.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpPost("Delete")]
+        public async Task<IActionResult> DeleteStudent([FromBody] StudentDto user)
+        {
+            if (user.BaseModel == null)
+            {
+                user.BaseModel = new BaseModel();
+            }
+            user.BaseModel.OperationType = "Delete";
+            var productDetails = await _studentService.AddStuent(user);
+            return productDetails;
         }
     }
 }

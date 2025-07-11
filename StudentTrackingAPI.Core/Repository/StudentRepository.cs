@@ -161,6 +161,7 @@ namespace StudentTrackingAPI.Core.Repositry
             parameters.Add("@ParentName", user.ParentName, DbType.String);        
             parameters.Add("@WatchId", user.WatchId, DbType.String);        
             parameters.Add("@createddate", user.createddate, DbType.String);        
+            parameters.Add("@updateddate", user.updateddate, DbType.String);        
             parameters.Add("@OutcomeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@OutcomeDetail", dbType: DbType.String, size: 4000, direction: ParameterDirection.Output);
             return parameters;
