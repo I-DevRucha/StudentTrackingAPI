@@ -22,8 +22,8 @@ namespace StudentTrackingAPI.Controllers
         }
 
 
-        [HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery] ParentMasterDto user)
+        [HttpGet("GetAllParent")]
+        public async Task<IActionResult> GetAllParent([FromQuery] ParentMasterDto user)
         {
             try
             {
@@ -44,8 +44,8 @@ namespace StudentTrackingAPI.Controllers
         }
 
          
-        [HttpGet("Get")]
-        public async Task<IActionResult> Get([FromQuery] ParentMasterDto user)
+        [HttpGet("GetParent")]
+        public async Task<IActionResult> GetParent([FromQuery] ParentMasterDto user)
         {
 
             if (user.BaseModel == null)
@@ -66,8 +66,8 @@ namespace StudentTrackingAPI.Controllers
         }
 
 
-        [HttpPost("Insert")]
-        public async Task<IActionResult> Insert([FromBody] ParentMasterDto user)
+        [HttpPost("InsertParent")]
+        public async Task<IActionResult> InsertParent([FromBody] ParentMasterDto user)
         {
             try
             {
