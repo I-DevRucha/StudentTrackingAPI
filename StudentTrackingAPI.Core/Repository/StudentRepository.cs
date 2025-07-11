@@ -160,7 +160,7 @@ namespace StudentTrackingAPI.Core.Repositry
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterMaster", parameter, commandType: CommandType.StoredProcedure);
+                    var queryResult = await connection.QueryMultipleAsync("proc_Student", parameter, commandType: CommandType.StoredProcedure);
                     var Model = queryResult.ReadSingleOrDefault<Object>();
                     var outcome = queryResult.ReadSingleOrDefault<Outcome>();
                     var outcomeId = outcome?.OutcomeId ?? 0;
