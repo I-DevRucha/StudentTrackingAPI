@@ -88,7 +88,7 @@ namespace StudentTrackingAPI.Controllers
                 {
                     user.BaseModel.OperationType = "GetStudent";
                 }
-                dynamic createduser = await _studentService.AddStuent(user);
+                dynamic createduser = await _studentService.Get(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
 
                 return createduser;

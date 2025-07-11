@@ -150,6 +150,51 @@ namespace StudentTrackingAPI.Core.Repositry
                 }
             }
         }
+
+        public async Task<IActionResult> Get(StudentDto model)
+        {
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var parameter = SetUser(model);
+                try
+                {
+                    var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
+                    await sqlConnection.OpenAsync();
+                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterMaster", parameter, commandType: CommandType.StoredProcedure);
+                    var Model = queryResult.ReadSingleOrDefault<Object>();
+                    var outcome = queryResult.ReadSingleOrDefault<Outcome>();
+                    var outcomeId = outcome?.OutcomeId ?? 0;
+                    var outcomeDetail = outcome?.OutcomeDetail ?? string.Empty;
+                    var result = new Result
+                    {
+
+                        Outcome = outcome,
+                        Data = Model,
+                        UserId = model.UserId
+                    };
+
+                    if (outcomeId == 1)
+                    {
+                        return new ObjectResult(result)
+                        {
+                            StatusCode = 200
+                        };
+                    }
+                    else
+                    {
+                        return new ObjectResult(result)
+                        {
+                            StatusCode = 400
+                        };
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
         public DynamicParameters SetUser(StudentDto user)
         {
 

@@ -11,6 +11,7 @@ namespace StudentTrackingAPI.Services.Interfaces
     public interface IStudentService
     {
         public Task<IActionResult> AddStuent(StudentDto model);
+        public Task<IActionResult> Get(StudentDto model);
         public Task<IActionResult> StudentMaster(StudentDto model);
     }
 }
