@@ -52,13 +52,34 @@ namespace StudentTrackingAPI.Controllers
                     user.BaseModel = new BaseModel();
                 }
 
-                if (user.UserId == null)
+                if (user.UserId != null)
                 {
                     user.BaseModel.OperationType = "Insert";
-                }
-                else
+                }             
+                
+                dynamic createduser = await _studentService.AddStuent(user);
+                var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
+
+                return createduser;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("EditStuent")]
+        public async Task<IActionResult> EditStuent([FromBody] StudentDto user)
+        {
+            try
+            {
+                if (user.BaseModel == null)
                 {
-                    user.updateddate = DateTime.Now;
+                    user.BaseModel = new BaseModel();
+                }
+
+                if (user.UserId != null)
+                {
                     user.BaseModel.OperationType = "Update";
                 }
                 dynamic createduser = await _studentService.AddStuent(user);
