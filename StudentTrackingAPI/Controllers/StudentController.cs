@@ -21,7 +21,7 @@ namespace StudentTrackingAPI.Controllers
             _configuration = configuration;
             _studentService = studentService;
         }
-
+        [HttpGet]
         public async Task<IActionResult> GetAll([FromQuery] StudentDto user)
         {
             try

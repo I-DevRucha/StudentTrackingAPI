@@ -21,7 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Add session state service
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options => {
+builder.Services.AddSession(options =>
+{
     options.IdleTimeout = TimeSpan.FromMinutes(60);
     // options.Cookie.HttpOnly = true;
     options.Cookie.Name = "ephr";
@@ -76,7 +77,6 @@ builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentR
 
 
 builder.Services.AddHttpClient();
-
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 
