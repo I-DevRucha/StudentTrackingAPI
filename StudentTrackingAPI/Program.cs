@@ -21,8 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Add session state service
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
+builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromMinutes(60);
     // options.Cookie.HttpOnly = true;
     options.Cookie.Name = "ephr";
@@ -74,8 +73,7 @@ builder.Services.AddDbContext<DatabaseContext>(opts => opts.UseSqlServer(builder
 
 builder.Services.AddScoped<IAuthService, AuthService>().AddScoped<AuthRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentRepository>();
-builder.Services.AddScoped<IStateMasterService, StateMasterService>().AddScoped<StateMasterRepository>();
-builder.Services.AddScoped<ICityValueMasterService, CityValueMasterService>().AddScoped<CityValueMasterRepository>();
+builder.Services.AddScoped<IParentMasterService, ParentMasterService>().AddScoped<ParentMasterRepository>();
 
 
 builder.Services.AddHttpClient();
