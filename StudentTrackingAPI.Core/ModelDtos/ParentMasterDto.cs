@@ -14,6 +14,7 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public string? RoleId { get; set; }
         public string? FisrtName { get; set; }
         public string? LastName { get; set; }
+        public string? RoleName { get; set; }
         public Guid? Id { get; set; }
         public string? MobileNo { get; set; }
         public string? Address { get; set; }

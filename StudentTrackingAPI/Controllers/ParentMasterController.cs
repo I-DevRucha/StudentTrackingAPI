@@ -110,6 +110,26 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
+        [HttpPost("Delete")]
+        public async Task<IActionResult> DeleteEvent([FromBody] ParentMasterDto model)
+        {
+            try
+            {
+
+                if (model.BaseModel == null)
+                {
+                    model.BaseModel = new BaseModel();
+                }
+                model.BaseModel.OperationType = "Delete";
+
+                var result = await _parentmaster.ParentMaster(model);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
 
     }
