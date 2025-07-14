@@ -11,36 +11,35 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Core.Repository
 {
-    public class ParameterValueMasterRepository 
+    public class StateMasterRepository 
     {
 		private readonly DatabaseContext _dbContext;
 
-		public ParameterValueMasterRepository(DatabaseContext dbContext)
+		public StateMasterRepository(DatabaseContext dbContext)
 		{
 			_dbContext = dbContext;
 		}
-
-		public async Task<IActionResult> ParameterValue(CityValueMasterDto model)
+		public async Task<IActionResult> Parameter(StateMasterDto model)
         {
             using (var connection = _dbContext.CreateConnection())
             {
-                //Guid? userIdValue = (Guid)user.UserId;
-                try
+				var parameter = SetParameter(model);
+				try
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterValueMaster", SetParameter(model), commandType: CommandType.StoredProcedure);
-                    var Model = queryResult.Read<Object>();
-                    var outcome = queryResult.ReadSingleOrDefault<Outcome>();
-                    var outcomeId = outcome?.OutcomeId ?? 0;
+                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterMaster", parameter, commandType: CommandType.StoredProcedure);
+					var Model = queryResult.Read<Object>().ToList();
+					var outcome = queryResult.ReadSingleOrDefault<Outcome>();
+					var outcomeId = outcome?.OutcomeId ?? 0;
                     var outcomeDetail = outcome?.OutcomeDetail ?? string.Empty;
                     var result = new Result
                     {
 
                         Outcome = outcome,
-                        Data = Model,
-                        UserId = model.UserId
-                    };
+						Data = Model,
+						UserId = model.UserId
+					};
 
                     if (outcomeId == 1)
                     {
@@ -51,7 +50,7 @@ namespace StudentTrackingAPI.Core.Repository
                     }
 					else if (outcomeId == 2)
 					{
-						// Login successful
+						
 						return new ObjectResult(result)
 						{
 							StatusCode = 409
@@ -72,16 +71,16 @@ namespace StudentTrackingAPI.Core.Repository
             }
         }
 
-        public async Task<IActionResult> Get(CityValueMasterDto model)
+        public async Task<IActionResult> Get(StateMasterDto model)
         {
             using (var connection = _dbContext.CreateConnection())
             {
-                //Guid? userIdValue = (Guid)user.UserId;
-                try
+				var parameter = SetParameter(model);
+				try
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterValueMaster", SetParameter(model), commandType: CommandType.StoredProcedure);
+                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterMaster", parameter, commandType: CommandType.StoredProcedure);
                     var Model = queryResult.ReadSingleOrDefault<Object>();
                     var outcome = queryResult.ReadSingleOrDefault<Outcome>();
                     var outcomeId = outcome?.OutcomeId ?? 0;
@@ -90,9 +89,9 @@ namespace StudentTrackingAPI.Core.Repository
                     {
 
                         Outcome = outcome,
-                        Data = Model,
-                        UserId = model.UserId
-                    };
+						Data = Model,
+						UserId = model.UserId
+					};
 
                     if (outcomeId == 1)
                     {
@@ -101,7 +100,6 @@ namespace StudentTrackingAPI.Core.Repository
                             StatusCode = 200
                         };
                     }
-
                     else
                     {
                         return new ObjectResult(result)
@@ -116,21 +114,18 @@ namespace StudentTrackingAPI.Core.Repository
                 }
             }
         }
-
-        public DynamicParameters SetParameter(CityValueMasterDto user)
+        public DynamicParameters SetParameter(StateMasterDto user)
         {
 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
-            parameters.Add("@pv_id", user.c_id, DbType.Guid);
+            parameters.Add("@c_id", user.s_id, DbType.Guid);
             parameters.Add("@UserId", user.UserId, DbType.String);
-            parameters.Add("@pv_parameterid", user.c_stateid, DbType.String);
-            parameters.Add("@pv_parametervalue", user.c_cityvalue, DbType.String);
-            parameters.Add("@pv_code", user.c_code, DbType.String);
-            parameters.Add("@pv_parametername", user.c_statename, DbType.String);
-            parameters.Add("@pv_isactive", user.c_isactive, DbType.String);
-            parameters.Add("@pv_createddate", user.c_createddate, DbType.DateTime);
-            parameters.Add("@pv_updateddate", user.c_updateddate, DbType.DateTime);
+            parameters.Add("@s_statename", user.s_Statename, DbType.String);
+            parameters.Add("@s_code", user.s_code, DbType.String);
+            parameters.Add("@s_isactive", user.s_isactive, DbType.String);
+            parameters.Add("@s_createddate", user.s_createddate, DbType.DateTime);
+            parameters.Add("@s_updateddate", user.s_updateddate, DbType.DateTime);
             parameters.Add("@OutcomeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@OutcomeDetail", dbType: DbType.String, size: 4000, direction: ParameterDirection.Output);
             return parameters;

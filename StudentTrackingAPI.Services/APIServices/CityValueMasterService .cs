@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Services.ApiServices
 {
-	public class ParameterValueMasterService : IParameterValueMasterService
-	{
-		ParameterValueMasterRepository _parameterMastervValueRepository;
-		public ParameterValueMasterService(ParameterValueMasterRepository parameterMasterValueRepository)
+	public class CityValueMasterService : ICityValueMasterService
+    {
+		CityValueMasterRepository _cityMastervValueRepository;
+		public CityValueMasterService(CityValueMasterRepository cityValueRepository)
 		{
-			_parameterMastervValueRepository = parameterMasterValueRepository;
+			_cityMastervValueRepository = cityValueRepository;
 		}
 		public async Task<IActionResult> ParameterValue(CityValueMasterDto model)
 		{
-			return await _parameterMastervValueRepository.ParameterValue(model);
+			return await _cityMastervValueRepository.ParameterValue(model);
 
 		}
 
 		public async Task<IActionResult> Get(CityValueMasterDto model)
 		{
-			return await _parameterMastervValueRepository.Get(model);
+			return await _cityMastervValueRepository.Get(model);
 
 		}
 	}

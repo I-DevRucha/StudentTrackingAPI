@@ -1,10 +1,8 @@
 ﻿using common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PoliceRecruitmentAPI.Core.ModelDtos;
-using PoliceRecruitmentAPI.Core.Repository;
-using PoliceRecruitmentAPI.Services.ApiServices;
-using PoliceRecruitmentAPI.Services.Interfaces;
+using StudentTrackingAPI.Core.ModelDtos;
+using StudentTrackingAPI.Services.Interfaces;
 using System.Data;
 
 namespace PoliceRecruitmentAPI.Controllers
@@ -13,21 +11,21 @@ namespace PoliceRecruitmentAPI.Controllers
     [ApiController]
 	[ExampleFilterAttribute]
 
-	public class ParameterValueMasterController : ControllerBase
+	public class CityValueMasterController : ControllerBase
     {
 		public IConfiguration _configuration;
-		private readonly ILogger<ParameterValueMasterController> _logger;
-		public readonly IParameterValueMasterService _parameterValueMaster;
+		private readonly ILogger<CityValueMasterController> _logger;
+		public readonly ICityValueMasterService _cityValueMaster;
 
-		public ParameterValueMasterController(ILogger<ParameterValueMasterController> logger, IConfiguration configuration, IParameterValueMasterService parameterValueMaster)
+		public CityValueMasterController(ILogger<CityValueMasterController> logger, IConfiguration configuration, ICityValueMasterService cityValueMaster)
 		{
 			_logger = logger;
 			_configuration = configuration;
-			_parameterValueMaster = parameterValueMaster;
+            _cityValueMaster = cityValueMaster;
 		}
 
 		[HttpGet("GetAll")]
-        public async Task<IActionResult> GetAll([FromQuery]ParameterValueMasterDto user)
+        public async Task<IActionResult> GetAll([FromQuery]CityValueMasterDto user)
         {
             try
             {
@@ -38,7 +36,7 @@ namespace PoliceRecruitmentAPI.Controllers
                 }
                 user.BaseModel.OperationType = "GetAll";
 
-                var createduser = await _parameterValueMaster.ParameterValue(user);
+                var createduser = await _cityValueMaster.ParameterValue(user);
                 return createduser;
             }
             catch (Exception)
@@ -48,7 +46,7 @@ namespace PoliceRecruitmentAPI.Controllers
         }
 
         [HttpGet("Get")]
-        public async Task<IActionResult> Get([FromQuery] ParameterValueMasterDto user)
+        public async Task<IActionResult> Get([FromQuery] CityValueMasterDto user)
         {
 			
             if (user.BaseModel == null)
@@ -59,7 +57,7 @@ namespace PoliceRecruitmentAPI.Controllers
             user.BaseModel.OperationType = "Get";
             try
             {
-                var parameter = await _parameterValueMaster.Get(user);
+                var parameter = await _cityValueMaster.Get(user);
                 return parameter;
             }
             catch (Exception)
@@ -69,7 +67,7 @@ namespace PoliceRecruitmentAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] ParameterValueMasterDto user)
+        public async Task<IActionResult> Insert([FromBody] CityValueMasterDto user)
         {
             try
             {
@@ -77,7 +75,7 @@ namespace PoliceRecruitmentAPI.Controllers
                 {
                     user.BaseModel = new BaseModel();
                 }
-                if (user.pv_id == null)
+                if (user.c_id == null)
                 {
                     user.BaseModel.OperationType = "Insert";
                 }
@@ -85,7 +83,7 @@ namespace PoliceRecruitmentAPI.Controllers
                 {
                     user.BaseModel.OperationType = "Update";
                 }
-                var createduser = await _parameterValueMaster.ParameterValue(user);
+                var createduser = await _cityValueMaster.ParameterValue(user);
                 return createduser;
             }
             catch (Exception)
@@ -95,14 +93,14 @@ namespace PoliceRecruitmentAPI.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody] ParameterValueMasterDto user)
+        public async Task<IActionResult> Delete([FromBody] CityValueMasterDto user)
         {
             if (user.BaseModel == null)
             {
                 user.BaseModel = new BaseModel();
             }
             user.BaseModel.OperationType = "Delete";
-            var productDetails = await _parameterValueMaster.ParameterValue(user);
+            var productDetails = await _cityValueMaster.ParameterValue(user);
             return productDetails;
         }
 

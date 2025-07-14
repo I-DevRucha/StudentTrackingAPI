@@ -12,14 +12,14 @@ namespace PoliceRecruitmentAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ExampleFilterAttribute]
-    public class ParameterMasterController : ControllerBase
+    public class StateMasterController : ControllerBase
     {
 
         public IConfiguration _configuration;
-        private readonly ILogger<ParameterMasterController> _logger;
-        public readonly IParameterMasterService _parameterMaster;
+        private readonly ILogger<StateMasterController> _logger;
+        public readonly IStateMasterService _parameterMaster;
 
-        public ParameterMasterController(ILogger<ParameterMasterController> logger, IConfiguration configuration, IParameterMasterService parameterMaster)
+        public StateMasterController(ILogger<StateMasterController> logger, IConfiguration configuration, IStateMasterService parameterMaster)
         {
             _logger = logger;
             _configuration = configuration;
@@ -77,7 +77,7 @@ namespace PoliceRecruitmentAPI.Controllers
                 {
                     user.BaseModel = new BaseModel();
                 }
-                if (user.p_id == null)
+                if (user.s_id == null)
                 {
                     user.BaseModel.OperationType = "Insert";
                 }

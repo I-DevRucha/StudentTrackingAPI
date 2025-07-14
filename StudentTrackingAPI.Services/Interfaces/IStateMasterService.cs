@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Services.Interfaces
 {
-	public interface IParameterMasterService
+	public interface IStateMasterService
 	{
 		public Task<IActionResult> Parameter(StateMasterDto model);
 		public Task<IActionResult> Get(StateMasterDto model);
