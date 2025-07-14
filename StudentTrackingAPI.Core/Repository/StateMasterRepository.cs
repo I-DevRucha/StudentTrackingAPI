@@ -119,7 +119,7 @@ namespace StudentTrackingAPI.Core.Repository
 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
-            parameters.Add("@c_id", user.s_id, DbType.Guid);
+            parameters.Add("@s_id", user.s_id, DbType.Guid);
             parameters.Add("@UserId", user.UserId, DbType.String);
             parameters.Add("@s_statename", user.s_Statename, DbType.String);
             parameters.Add("@s_code", user.s_code, DbType.String);
