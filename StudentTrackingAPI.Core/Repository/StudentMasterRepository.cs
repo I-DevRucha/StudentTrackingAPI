@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Core.Repositry
 {
-    public  class StudentRepository
+    public  class StudentMasterRepository
     {
         private readonly DatabaseContext _dbContext;
-        public StudentRepository(DatabaseContext dbContext)
+        public StudentMasterRepository(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
         }

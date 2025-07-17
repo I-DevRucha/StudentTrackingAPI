@@ -13,8 +13,8 @@ namespace StudentTrackingAPI.Services.APIServices
 {
     public class StudentService: IStudentService
     {
-        StudentRepository _studentRepository;
-        public StudentService(StudentRepository authRepository)
+        StudentMasterRepository _studentRepository;
+        public StudentService(StudentMasterRepository authRepository)
         {
             _studentRepository = authRepository;
         }
