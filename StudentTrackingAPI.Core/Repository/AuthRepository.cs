@@ -341,11 +341,7 @@ namespace StudentTrackingAPI.Core.Repository
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
             parameters.Add("@Username", user.Username, DbType.String);
             parameters.Add("@Id", user.UserId, DbType.String);
-            parameters.Add("@RoleId", user.RoleId, DbType.String);
-            parameters.Add("@MailId", user.MailId, DbType.String);
             parameters.Add("@Password", user.Password, DbType.String);
-            parameters.Add("@OldPassword", user.OldPassword, DbType.String);
-            parameters.Add("@NewPassword", user.NewPassword, DbType.String);
             parameters.Add("@IpAddress", user.IpAddress, DbType.String);
             parameters.Add("@SessionId", user.SessionId, DbType.String);
             parameters.Add("@SessionIds", dbType: DbType.String, size: 4000, direction: ParameterDirection.Output);

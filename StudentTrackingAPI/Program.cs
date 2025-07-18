@@ -72,8 +72,11 @@ if (builder.Environment.IsDevelopment())
 builder.Services.AddDbContext<DatabaseContext>(opts => opts.UseSqlServer(builder.Configuration["ConnectionStrings:prod"]));
 
 builder.Services.AddScoped<IAuthService, AuthService>().AddScoped<AuthRepository>();
-builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>().AddScoped<StudentMasterRepository>();
 builder.Services.AddScoped<IParentMasterService, ParentMasterService>().AddScoped<ParentMasterRepository>();
+builder.Services.AddScoped<IStateMasterService, StateMasterService>().AddScoped<StateMasterRepository>();
+builder.Services.AddScoped<ICityValueMasterService, CityValueMasterService>().AddScoped<CityValueMasterRepository>();
+builder.Services.AddScoped<IRoleMasterService, RoleMasterService>().AddScoped<RoleMasterRepository>();
 
 
 builder.Services.AddHttpClient();

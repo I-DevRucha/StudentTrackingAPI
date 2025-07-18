@@ -13,14 +13,25 @@ namespace StudentTrackingAPI.Services.APIServices
 {
     public class StudentService: IStudentService
     {
-        StudentRepository _studentRepository;
-        public StudentService(StudentRepository authRepository)
+        StudentMasterRepository _studentRepository;
+        public StudentService(StudentMasterRepository authRepository)
         {
             _studentRepository = authRepository;
         }
         public async Task<IActionResult> AddStuent(StudentDto model)
         {
             return await _studentRepository.AddStuent(model);
+
+        }
+
+        public async Task<IActionResult> Get(StudentDto model)
+        {
+            return await _studentRepository.Get(model);
+
+        }
+        public async Task<IActionResult> StudentMaster(StudentDto model)
+        {
+            return await _studentRepository.StudentMaster(model);
 
         }
     }

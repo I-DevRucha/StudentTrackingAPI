@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace StudentTrackingAPI.Services.Interfaces
 {
-    public interface IStudentService
-    {
-        public Task<IActionResult> AddStuent(StudentDto model);
-        public Task<IActionResult> Get(StudentDto model);
-        public Task<IActionResult> StudentMaster(StudentDto model);
-    }
+	public interface IStateMasterService
+	{
+		public Task<IActionResult> Parameter(StateMasterDto model);
+		public Task<IActionResult> Get(StateMasterDto model);
+	}
 }

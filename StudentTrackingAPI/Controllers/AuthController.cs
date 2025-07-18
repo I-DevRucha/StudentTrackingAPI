@@ -117,7 +117,7 @@ namespace StudentTrackingAPI.Controllers
                 {
                     if (outcomeId == 1)
                     {
-                        string staffid = Model.Staffid;
+                        string staffid = Model?.Staffid?.ToString() ?? string.Empty;
                         string staffname = Model.Staffname;
                         string roleid = Model.RoleId?.ToString();
                         string dutyid = Model.DutyId?.ToString();
