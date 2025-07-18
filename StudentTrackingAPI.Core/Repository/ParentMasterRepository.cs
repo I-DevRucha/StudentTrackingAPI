@@ -181,7 +181,7 @@ namespace StudentTrackingAPI.Core.Repository
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
             parameters.Add("@Id", user.Id, DbType.Guid);
             parameters.Add("@UserId", user.UserId, DbType.String);
-            parameters.Add("@FisrtName", user.FisrtName, DbType.String);
+            parameters.Add("@FirstName", user.FisrtName, DbType.String);
             parameters.Add("@roleid", user.RoleId, DbType.String);
             parameters.Add("@LastName", user.LastName, DbType.String);
             parameters.Add("@MobileNo", user.MobileNo, DbType.String);
