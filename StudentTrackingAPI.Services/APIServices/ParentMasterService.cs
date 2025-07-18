@@ -27,5 +27,10 @@ namespace StudentTrackingAPI.Services.APIServices
             return await _parentmasterrepository.Get(model);
 
         }
+        public async Task<IActionResult> Email(ParentMasterDto model)
+        {
+            return await _parentmasterrepository.Email(model);
+
+        }
     }
 }

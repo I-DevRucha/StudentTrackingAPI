@@ -12,5 +12,6 @@ namespace StudentTrackingAPI.Services.Interfaces
     {
         public Task<IActionResult> Get(ParentMasterDto model);
         public Task<IActionResult> ParentMaster(ParentMasterDto model);
+        public Task<IActionResult> Email(ParentMasterDto model);
     }
 }

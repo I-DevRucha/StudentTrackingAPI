@@ -32,7 +32,7 @@ namespace StudentTrackingAPI.Core.Repository
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_Parentmaster", parameter, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    var queryResult = await connection.QueryMultipleAsync("proc_ParentMaster", parameter, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     var Model = queryResult.Read<Object>().ToList();
                     var outcome = queryResult.ReadSingleOrDefault<Outcome>();
                     var outcomeId = outcome?.OutcomeId ?? 0;
@@ -96,7 +96,7 @@ namespace StudentTrackingAPI.Core.Repository
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_Parentmaster", parameter, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+                    var queryResult = await connection.QueryMultipleAsync("proc_ParentMaster", parameter, commandType: CommandType.StoredProcedure, commandTimeout: 300);
                     var Model = queryResult.ReadSingleOrDefault<Object>();
                     var outcome = queryResult.ReadSingleOrDefault<Outcome>();
                     var outcomeId = outcome?.OutcomeId ?? 0;
@@ -122,6 +122,50 @@ namespace StudentTrackingAPI.Core.Repository
                             StatusCode = 400
                         };
                     }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task<IActionResult> Email(ParentMasterDto model)
+        {
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var parameter = SetUser(model);
+
+                try
+                {
+                    var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
+                    await sqlConnection.OpenAsync();
+
+                    var queryResult = await connection.QueryMultipleAsync("proc_ParentMaster", parameter, commandType: CommandType.StoredProcedure, commandTimeout: 300);
+
+                    var modelList = queryResult.Read<object>().ToList();
+                    var outcome = queryResult.ReadSingleOrDefault<Outcome>();
+
+                    var result = new Result
+                    {
+                        Outcome = outcome,
+                        Data = modelList,
+                        UserId = model.UserId
+                    };
+
+                    int outcomeId = outcome?.OutcomeId ?? 0;
+
+                    return new ObjectResult(result)
+                    {
+                        StatusCode = outcomeId switch
+                        {
+                            1 => 200,
+                            2 => 409,
+                            3 => 423,
+                            4 => 424,
+                            _ => 400
+                        }
+                    };
                 }
                 catch (Exception)
                 {
