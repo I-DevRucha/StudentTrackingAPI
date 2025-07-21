@@ -99,7 +99,7 @@ namespace StudentTrackingAPI.Controllers
                 var dataList = createduser?.Value?.Data as IEnumerable<dynamic>;
                 var insertedId = dataList?.FirstOrDefault()?.Id as Guid?;
                 // ✅ Send email only if insert is successful
-                if (outcomeidvalue == 1 && user.Id == null && insertedId != null)
+                if (outcomeidvalue == 1  && insertedId != null)
                 {
                     // Set operation type for fetching email data
                     user.Id = insertedId;
@@ -174,6 +174,8 @@ namespace StudentTrackingAPI.Controllers
                 var fromAddress = new MailAddress(_configuration["MailSettings:Username"]);
                 var mail = new MailMessage
                 {
+                    From = fromAddress,
+                    Subject ="Student Tracking Portal - Login Credentials",
                     Body = $@"
                            <p>Dear Parent,</p>
                            <p>We are pleased to inform you that your account has been successfully created on the <strong>Student Tracking Portal</strong>.</p>
