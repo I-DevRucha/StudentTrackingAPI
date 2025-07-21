@@ -29,5 +29,8 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public string? Country { get; set; }
         public string? PinCode { get; set; }
         public DataTable? DataTable { get; set; }
+        public string? um_EmailId { get; set; }
+        public string? um_user_name { get; set; }
+        public string? Password { get; set; }
     }
 }
