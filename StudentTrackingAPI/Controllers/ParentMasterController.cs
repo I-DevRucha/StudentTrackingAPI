@@ -30,7 +30,7 @@ namespace StudentTrackingAPI.Controllers
 
         [HttpGet("GetAllParent")]
         public async Task<IActionResult> GetAllParent([FromQuery] ParentMasterDto user)
-        {
+     {
             try
             {
 
