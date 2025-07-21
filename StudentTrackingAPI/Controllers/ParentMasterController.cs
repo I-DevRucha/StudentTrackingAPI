@@ -157,53 +157,6 @@ namespace StudentTrackingAPI.Controllers
         }
 
 
-        [HttpGet("Email")]
-        public async Task<IActionResult> Email([FromQuery] ParentMasterDto user)
-        {
-            try
-            {
-                if (user.BaseModel == null)
-                    user.BaseModel = new BaseModel();
-
-                user.BaseModel.OperationType = "Emailsenddata";
-
-                var result = await _parentmaster.Email(user);
-
-                if (result is ObjectResult objectResult && objectResult.StatusCode == 200)
-                {
-                    //  Send email after approval
-                    //SendApprovalMail(user.Email);
-                    var resultData = objectResult.Value as Result;
-                    if (result is ObjectResult objectResult1 && objectResult.StatusCode == 200)
-                    {
-                        var dataList = ((Result)objectResult.Value).Data as List<dynamic>;
-                        var firstRecord = dataList?.FirstOrDefault();
-
-                        if (firstRecord != null)
-                        {
-                            string ParentEmail = firstRecord.um_EmailId;
-                            string UserNameId = firstRecord.um_user_name;
-                            string Password = firstRecord.Password;
-                            //   string hrName = user.Name;
-                            //string ComapnyName = firstRecord.Name;
-                            // Check if the candidate email is valid before sending
-                            if (!string.IsNullOrWhiteSpace(ParentEmail))
-                            {
-                                SendApprovalMail(ParentEmail, UserNameId, Password);
-                            }
-                        }
-                    }
-
-                }
-
-                return result;
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-        }
-
         private void SendApprovalMail(string ParentEmail, string UserNameId, string Password)
         {
             try
