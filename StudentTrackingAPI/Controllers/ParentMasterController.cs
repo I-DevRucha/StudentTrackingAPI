@@ -30,7 +30,7 @@ namespace StudentTrackingAPI.Controllers
 
         [HttpGet("GetAllParent")]
         public async Task<IActionResult> GetAllParent([FromQuery] ParentMasterDto user)
-     {
+        {
             try
             {
 
@@ -49,7 +49,7 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
-         
+
         [HttpGet("GetParent")]
         public async Task<IActionResult> GetParent([FromQuery] ParentMasterDto user)
         {
@@ -96,13 +96,36 @@ namespace StudentTrackingAPI.Controllers
                 }
                 dynamic createduser = await _parentmaster.ParentMaster(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
-                //if (outcomeidvalue == 1)
-                //{
+                var dataList = createduser?.Value?.Data as IEnumerable<dynamic>;
+                var insertedId = dataList?.FirstOrDefault()?.Id as Guid?;
+                // ✅ Send email only if insert is successful
+                if (outcomeidvalue == 1 && user.Id == null && insertedId != null)
+                {
+                    // Set operation type for fetching email data
+                    user.Id = insertedId;
+                    user.BaseModel.OperationType = "Emailsenddata";
+                    var emailResult = await _parentmaster.Email(user);
 
-                //	var datavalue = createduser.Value.Outcome.OutcomeDetail;
+                    if (emailResult is ObjectResult emailObject && emailObject.StatusCode == 200)
+                    {
+                        var resultData = emailObject.Value as Result;
+                        var dataList1 = resultData?.Data as List<dynamic>;
+                        var firstRecord = dataList1?.FirstOrDefault();
 
-                //	await SendNo(datavalue);
-                //}
+                        if (firstRecord != null)
+                        {
+                            string ParentEmail = firstRecord.um_EmailId;
+                            string UserNameId = firstRecord.um_user_name;
+                            string Password = firstRecord.Password;
+
+                            if (!string.IsNullOrWhiteSpace(ParentEmail))
+                            {
+                                SendApprovalMail(ParentEmail, UserNameId, Password);
+                            }
+                        }
+                    }
+                }
+
 
                 return createduser;
             }
@@ -134,53 +157,6 @@ namespace StudentTrackingAPI.Controllers
         }
 
 
-        [HttpGet("Email")]
-        public async Task<IActionResult> Email([FromQuery] ParentMasterDto user)
-        {
-            try
-            {
-                if (user.BaseModel == null)
-                    user.BaseModel = new BaseModel();
-
-                user.BaseModel.OperationType = "Emailsenddata";
-
-                var result = await _parentmaster.Email(user);
-
-                if (result is ObjectResult objectResult && objectResult.StatusCode == 200)
-                {
-                    //  Send email after approval
-                    //SendApprovalMail(user.Email);
-                    var resultData = objectResult.Value as Result;
-                    if (result is ObjectResult objectResult1 && objectResult.StatusCode == 200)
-                    {
-                        var dataList = ((Result)objectResult.Value).Data as List<dynamic>;
-                        var firstRecord = dataList?.FirstOrDefault();
-
-                        if (firstRecord != null)
-                        {
-                            string ParentEmail = firstRecord.um_EmailId;
-                            string UserNameId = firstRecord.um_user_name;
-                            string Password = firstRecord.Password;
-                            //   string hrName = user.Name;
-                            //string ComapnyName = firstRecord.Name;
-                            // Check if the candidate email is valid before sending
-                            if (!string.IsNullOrWhiteSpace(ParentEmail))
-                            {
-                                SendApprovalMail(ParentEmail, UserNameId, Password);
-                            }
-                        }
-                    }
-                     
-                }
-
-                return result;
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
-        }
-
         private void SendApprovalMail(string ParentEmail, string UserNameId, string Password)
         {
             try
@@ -198,15 +174,17 @@ namespace StudentTrackingAPI.Controllers
                 var fromAddress = new MailAddress(_configuration["MailSettings:Username"]);
                 var mail = new MailMessage
                 {
-                    From = fromAddress,
-                    Subject = "Your password has been sent to you",
                     Body = $@"
-                <p>Dear {UserNameId},</p>
-                <p>Your Username is <strong>{UserNameId}</strong>.</p>
-                <p>Your password is <strong>{Password}</strong>.</p>
-                <p>We will contact you soon with further steps.</p>
-                <br />
-                <p>Regards,<br />{ParentEmail} HR Team</p>",
+                           <p>Dear Parent,</p>
+                           <p>We are pleased to inform you that your account has been successfully created on the <strong>Student Tracking Portal</strong>.</p>
+                           <p>Below are your login credentials to access the portal and monitor your child's academic and attendance progress:</p>
+                           <p><strong>Username:</strong> {UserNameId}</p>
+                           <p><strong>Password:</strong> {Password}</p>
+                           <p>You can log in via the portal link provided by your school.</p>
+                           <br />
+                           <p>If you have any questions or face any issues, please contact the school administration.</p>
+                           <br />
+                           <p>Regards,<br />{ParentEmail} School Administration Team</p>",
                     IsBodyHtml = true
                 };
 
