@@ -78,6 +78,7 @@ builder.Services.AddScoped<IStateMasterService, StateMasterService>().AddScoped<
 builder.Services.AddScoped<ICityValueMasterService, CityValueMasterService>().AddScoped<CityValueMasterRepository>();
 builder.Services.AddScoped<IRoleMasterService, RoleMasterService>().AddScoped<RoleMasterRepository>();
 builder.Services.AddScoped<IGetWebMenuService, GetWebMenuService>().AddScoped<GetWebMenuRepository>();
+builder.Services.AddScoped<IPrincipleMasterService, PrincipleMasterService>().AddScoped<PrincipleMasterRepository>();
 
 
 builder.Services.AddHttpClient();
