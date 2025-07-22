@@ -96,14 +96,35 @@ namespace StudentTrackingAPI.Controllers
                 }
                 dynamic createduser = await _principlemaster.PrincipleMaster(user);
                 var outcomeidvalue = createduser.Value.Outcome.OutcomeId;
-                //if (outcomeidvalue == 1)
-                //{
+                var dataList = createduser?.Value?.Data as IEnumerable<dynamic>;
+                var insertedId = dataList?.FirstOrDefault()?.Id as Guid?;
+                // ✅ Send email only if insert is successful
+                if (outcomeidvalue == 1  && insertedId != null)
+                {
+                    // Set operation type for fetching email data
+                    user.Id = insertedId;
+                    user.BaseModel.OperationType = "Emailsenddata";
+                    var emailResult = await _principlemaster.Email(user);
 
-                //	var datavalue = createduser.Value.Outcome.OutcomeDetail;
+                    if (emailResult is ObjectResult emailObject && emailObject.StatusCode == 200)
+                    {
+                        var resultData = emailObject.Value as Result;
+                        var dataList1 = resultData?.Data as List<dynamic>;
+                        var firstRecord = dataList1?.FirstOrDefault();
 
-                //	await SendNo(datavalue);
-                //}
+                        if (firstRecord != null)
+                        {
+                            string PrincipleEmail = firstRecord.um_EmailId;
+                            string UserNameId = firstRecord.um_user_name;
+                            string Password = firstRecord.Password;
 
+                            if (!string.IsNullOrWhiteSpace(PrincipleEmail))
+                            {
+                                SendApprovalMail(PrincipleEmail, UserNameId, Password);
+                            }
+                        }
+                    }
+                }
                 return createduser;
             }
             catch (Exception)
@@ -133,8 +154,48 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
+        private void SendApprovalMail(string PrincipleEmail, string UserNameId, string Password)
+        {
+            try
+            {
+                var smtpClient = new System.Net.Mail.SmtpClient(_configuration["MailSettings:Host"])
+                {
+                    Port = int.Parse(_configuration["MailSettings:Port"]),
+                    Credentials = new NetworkCredential(
+                        _configuration["MailSettings:Username"],
+                        _configuration["MailSettings:Password"]
+                    ),
+                    EnableSsl = bool.Parse(_configuration["MailSettings:EnableSsl"])
+                };
 
-         
+                var fromAddress = new MailAddress(_configuration["MailSettings:Username"]);
+                var mail = new MailMessage
+                {
+                    From = fromAddress,
+                    Subject ="Student Tracking Portal - Login Credentials",
+                    Body = $@"
+                           <p>Dear Principal,</p>
+                           <p>We are pleased to inform you that your account has been successfully created on the <strong>Student Tracking Portal</strong>.</p>
+                           <p>Below are your login credentials to access the portal and monitor your child's academic and attendance progress:</p>
+                           <p><strong>Username:</strong> {UserNameId}</p>
+                           <p><strong>Password:</strong> {Password}</p>
+                           <p>You can log in via the portal link provided by your school.</p>
+                           <br />
+                           <p>If you have any questions or face any issues, please contact the school administration.</p>
+                           <br />
+                           <p>Regards,<br /> Administration Team</p>",
+                    IsBodyHtml = true
+                };
+
+                mail.To.Add(PrincipleEmail);
+                smtpClient.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
     }
 
 

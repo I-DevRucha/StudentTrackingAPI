@@ -27,10 +27,10 @@ namespace StudentTrackingAPI.Services.APIServices
             return await _principlemasterrepository.Get(model);
 
         }
-        //public async Task<IActionResult> Email(PrincipleMasterDto model)
-        //{
-        //    return await _principlemasterrepository.Email(model);
+        public async Task<IActionResult> Email(PrincipleMasterDto model)
+        {
+            return await _principlemasterrepository.Email(model);
 
-        //}
+        }
     }
 }

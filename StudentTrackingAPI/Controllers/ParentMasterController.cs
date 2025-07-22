@@ -186,7 +186,7 @@ namespace StudentTrackingAPI.Controllers
                            <br />
                            <p>If you have any questions or face any issues, please contact the school administration.</p>
                            <br />
-                           <p>Regards,<br />{ParentEmail} School Administration Team</p>",
+                           <p>Regards,<br /> Administration Team</p>",
                     IsBodyHtml = true
                 };
 

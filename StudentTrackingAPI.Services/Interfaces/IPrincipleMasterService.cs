@@ -12,6 +12,6 @@ namespace StudentTrackingAPI.Services.Interfaces
     {
         public Task<IActionResult> Get(PrincipleMasterDto model);
         public Task<IActionResult> PrincipleMaster(PrincipleMasterDto model);
-        //public Task<IActionResult> Email(PrincipleMasterDto model);
+        public Task<IActionResult> Email(PrincipleMasterDto model);
     }
 }
