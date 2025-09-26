@@ -12,13 +12,14 @@ namespace StudentTrackingAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ExampleFilterAttribute]
+  //  [ExampleFilterAttribute]
     public class DeviceContollercs : ControllerBase
     {
         // public IConfiguration _configuration;
         private readonly IConfiguration _configuration;
         private readonly ILogger<DeviceContollercs> _logger;
         public readonly IDeviceService _devicemaster;
+        private static GpsTcpListener _gpsListener;
 
         public DeviceContollercs(ILogger<DeviceContollercs> logger, IConfiguration configuration, IDeviceService devicemaster)
         {
@@ -93,8 +94,33 @@ namespace StudentTrackingAPI.Controllers
                 throw;
             }
         }
+         [HttpGet("{imei}")]
+    public IActionResult GetLocation(string imei)
+    {
+        // TODO: Fetch latest location from DB
+        return Ok(new
+        {
+            IMEI = imei,
+            Latitude = "22.5726",
+            Longitude = "88.3639",
+            LastUpdate = DateTime.UtcNow
+        });
+    }
+        [HttpGet("start")]
+        public IActionResult StartListener()
+        {
+            if (_gpsListener == null)
+            {
+                _gpsListener = new GpsTcpListener(9000);
+                _ = _gpsListener.StartAsync(); // fire and forget
+                return Ok("✅ GPS TCP Listener started on port 9000");
+            }
+            else
+            {
+                return Ok("⚠️ GPS TCP Listener is already running");
+            }
+        }
 
-        
     }
 
 

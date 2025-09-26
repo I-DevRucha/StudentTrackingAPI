@@ -19,7 +19,7 @@ namespace StudentTrackingAPI.Services.ApiServices
         }
         public async Task<IActionResult> DeviceValue(DeviceDto model)
         {
-            return await _deviceRepository.ParameterValue(model);
+            return await _deviceRepository.DeviceValue(model);
 
         }
 
