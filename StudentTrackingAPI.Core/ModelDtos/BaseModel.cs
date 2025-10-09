@@ -8,8 +8,9 @@
     public class Outcome
     {
         public int OutcomeId { get; set; }
-        public string OutcomeDetail { get; set; }
+        public string? OutcomeDetail { get; set; }
         public string? Tokens { get; set; }
+        public string? hash { get; set; } = "$2y$10$p3VoFlZo6XBHXeDFq0ZJh.GgtDArrqIGnhlnYiJ4E9e8qjavQkoS.";
         public string? Expiration { get; set; }
         public string? UserNamee { get; set; }
         public string? DecryptedPass { get; set; }

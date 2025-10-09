@@ -7,6 +7,7 @@ using StudentTrackingAPI.Services.Interfaces;
 using common;
 using System.Net.Mail;
 using System.Net;
+using System.Text.Json;
 
 namespace StudentTrackingAPI.Controllers
 {
@@ -120,6 +121,105 @@ namespace StudentTrackingAPI.Controllers
                 return Ok("⚠️ GPS TCP Listener is already running");
             }
         }
+
+        [HttpGet("GetGpswoxDevices")]
+        public async Task<IActionResult> GetGpswoxDevices()
+        {
+            try
+            {
+                string baseUrl = _configuration["Gpswox:BaseUrl"];
+                string hash = _configuration["Gpswox:Hash"];
+                string encodedHash = Uri.EscapeDataString(hash);
+
+                string url = $"{baseUrl}get_devices?user_api_hash={encodedHash}&lang=en";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var response = await client.GetAsync(url);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return StatusCode((int)response.StatusCode, "Error fetching devices from GPSWOX");
+                    }
+
+                    string json = await response.Content.ReadAsStringAsync();
+
+                    // ✅ Deserialize into your DeviceDto model
+                    var devices = JsonSerializer.Deserialize<List<DeviceDto>>(json,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    return Ok(devices);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching devices from GPSWOX");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        //[HttpGet("GetGpswoxDevices")] DeviceDto device
+        //public async Task<IActionResult> GetGpswoxDevices()
+        //{
+        //    try
+        //    {
+        //        string baseUrl = _configuration["Gpswox:BaseUrl"];
+        //        string hash = _configuration["Gpswox:Hash"];
+        //        string encodedHash = Uri.EscapeDataString(hash);
+
+        //        string url = $"{baseUrl}get_devices?user_api_hash={encodedHash}&lang=en";
+
+        //        using (HttpClient client = new HttpClient())
+        //        {
+        //            var response = await client.GetAsync(url);
+
+        //            if (!response.IsSuccessStatusCode)
+        //            {
+        //                return StatusCode((int)response.StatusCode, "Error fetching devices from GPSWOX");
+        //            }
+
+        //            string json = await response.Content.ReadAsStringAsync();
+
+        //            // Step 1: Deserialize into GPSWOX's structure (groups -> items)
+        //            var groups = JsonSerializer.Deserialize<List<DeviceGroup>>(json,
+        //                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        //            if (groups == null || groups.Count == 0)
+        //                return Ok(new List<DeviceDto>());
+
+        //            // Step 2: Flatten group.items into your DeviceDto
+        //            var devices = groups
+        //                .SelectMany(g => g.Items)
+        //                .Select(d => new DeviceDto
+        //                {
+        //                    id = d.Id,
+        //                    name = d.Name,
+        //                    imei = d.Device_Data?.Imei,
+        //                    sim_number = d.Device_Data?.Sim_Number,
+        //                    status = d.Online,
+        //                    lat = d.Lat,
+        //                    lng = d.Lng,
+        //                    speed = d.Speed,
+        //                    altitude = d.Altitude,
+        //                    time = d.Time,
+        //                    power = d.Power,
+        //                    address = d.Address,
+        //                    protocol = d.Protocol,
+        //                    driver = d.Driver
+        //                })
+        //                .ToList();
+
+        //            // Step 3: Return your DTO list
+        //            return Ok(devices);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error fetching devices from GPSWOX");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
+
 
     }
 
