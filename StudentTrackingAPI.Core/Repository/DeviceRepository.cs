@@ -29,7 +29,7 @@ namespace StudentTrackingAPI.Core.Repository
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterValueMaster", SetParameter(model), commandType: CommandType.StoredProcedure);
+                    var queryResult = await connection.QueryMultipleAsync("proc_DeviceData", SetParameter(model), commandType: CommandType.StoredProcedure);
                     var Model = queryResult.Read<Object>();
                     var outcome = queryResult.ReadSingleOrDefault<Outcome>();
                     var outcomeId = outcome?.OutcomeId ?? 0;
@@ -81,7 +81,7 @@ namespace StudentTrackingAPI.Core.Repository
                 {
                     var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
                     await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_ParameterValueMaster", SetParameter(model), commandType: CommandType.StoredProcedure);
+                    var queryResult = await connection.QueryMultipleAsync("proc_DeviceData", SetParameter(model), commandType: CommandType.StoredProcedure);
                     var Model = queryResult.ReadSingleOrDefault<Object>();
                     var outcome = queryResult.ReadSingleOrDefault<Outcome>();
                     var outcomeId = outcome?.OutcomeId ?? 0;
@@ -124,11 +124,13 @@ namespace StudentTrackingAPI.Core.Repository
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
             parameters.Add("@device_id", user.device_id, DbType.Guid);
             parameters.Add("@UserId", user.UserId, DbType.String);
+            parameters.Add("@Name", user.name, DbType.String);
             parameters.Add("@lang", user.lang, DbType.String);
             parameters.Add("@imei", user.imei, DbType.String);
+            parameters.Add("@HashKey", user.HashKey, DbType.String);
             parameters.Add("@sim_number", user.sim_number, DbType.String);
             parameters.Add("@status", user.status, DbType.String);
-             parameters.Add("@OutcomeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            parameters.Add("@OutcomeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@OutcomeDetail", dbType: DbType.String, size: 4000, direction: ParameterDirection.Output);
             return parameters;
         }

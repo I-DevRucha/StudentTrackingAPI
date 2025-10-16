@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using StudentTrackingAPI.Services.APIServices;
 using StudentTrackingAPI.Core.Repositry;
 using StudentTrackingAPI.Controllers;
+using MyTrackerApp.Services;
 
 
 
@@ -82,7 +83,7 @@ builder.Services.AddScoped<IGetWebMenuService, GetWebMenuService>().AddScoped<Ge
 builder.Services.AddScoped<IPrincipleMasterService, PrincipleMasterService>().AddScoped<PrincipleMasterRepository>();
 builder.Services.AddScoped<IDeviceService, DeviceService>().AddScoped<DeviceRepository>();
 //builder.Services.AddHostedService<GpsTcpListener>();
-
+builder.Services.AddHttpClient<GeocodingService>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddControllers().AddNewtonsoftJson();

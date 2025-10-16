@@ -73,8 +73,32 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
+        [HttpPost("Insert")]
+        public async Task<IActionResult> Insert([FromBody] DeviceDto user)
+        {
+            try
+            {
+                if (user.BaseModel == null)
+                {
+                    user.BaseModel = new BaseModel();
+                }
+                if (user.Id == null)
+                {
+                    user.BaseModel.OperationType = "Insert";
+                }
+                else
+                {
+                    user.BaseModel.OperationType = "Update";
+                }
+                var createduser = await _devicemaster.DeviceValue(user);
+                return createduser;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
-       
         [HttpPost("Delete")]
         public async Task<IActionResult> DeletePrinciple([FromBody] DeviceDto model)
         {
@@ -122,41 +146,41 @@ namespace StudentTrackingAPI.Controllers
             }
         }
 
-        [HttpGet("GetGpswoxDevices")]
-        public async Task<IActionResult> GetGpswoxDevices()
-        {
-            try
-            {
-                string baseUrl = _configuration["Gpswox:BaseUrl"];
-                string hash = _configuration["Gpswox:Hash"];
-                string encodedHash = Uri.EscapeDataString(hash);
+        //[HttpGet("GetGpswoxDevices")]
+        //public async Task<IActionResult> GetGpswoxDevices()
+        //{
+        //    try
+        //    {
+        //        string baseUrl = _configuration["Gpswox:BaseUrl"];
+        //        string hash = _configuration["Gpswox:Hash"];
+        //        string encodedHash = Uri.EscapeDataString(hash);
 
-                string url = $"{baseUrl}get_devices?user_api_hash={encodedHash}&lang=en";
+        //        string url = $"{baseUrl}get_devices?user_api_hash={encodedHash}&lang=en";
 
-                using (HttpClient client = new HttpClient())
-                {
-                    var response = await client.GetAsync(url);
+        //        using (HttpClient client = new HttpClient())
+        //        {
+        //            var response = await client.GetAsync(url);
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return StatusCode((int)response.StatusCode, "Error fetching devices from GPSWOX");
-                    }
+        //            if (!response.IsSuccessStatusCode)
+        //            {
+        //                return StatusCode((int)response.StatusCode, "Error fetching devices from GPSWOX");
+        //            }
 
-                    string json = await response.Content.ReadAsStringAsync();
+        //            string json = await response.Content.ReadAsStringAsync();
 
-                    // ✅ Deserialize into your DeviceDto model
-                    var devices = JsonSerializer.Deserialize<List<DeviceDto>>(json,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        //            // ✅ Deserialize into your DeviceDto model
+        //            var devices = JsonSerializer.Deserialize<List<DeviceDto>>(json,
+        //                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                    return Ok(devices);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error fetching devices from GPSWOX");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
+        //            return Ok(devices);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error fetching devices from GPSWOX");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
 
         //[HttpGet("GetGpswoxDevices")] DeviceDto device
         //public async Task<IActionResult> GetGpswoxDevices()
