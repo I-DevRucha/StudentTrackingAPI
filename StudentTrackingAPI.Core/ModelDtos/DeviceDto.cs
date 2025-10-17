@@ -18,7 +18,7 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public string? imei { get; set; }
         public string? sim_number { get; set; }
         public string? status { get; set; }
-        public int id { get; set; }
+       // public int id { get; set; }
         public string? name { get; set; }
         public string? online { get; set; }
         public string? alarm { get; set; }
