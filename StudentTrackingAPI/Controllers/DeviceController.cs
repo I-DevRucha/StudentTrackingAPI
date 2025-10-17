@@ -14,15 +14,15 @@ namespace StudentTrackingAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
   //  [ExampleFilterAttribute]
-    public class DeviceContoller : ControllerBase
+    public class DeviceController : ControllerBase
     {
         // public IConfiguration _configuration;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<DeviceContoller> _logger;
+        private readonly ILogger<DeviceController> _logger;
         public readonly IDeviceService _devicemaster;
         private static GpsTcpListener _gpsListener;
 
-        public DeviceContoller(ILogger<DeviceContoller> logger, IConfiguration configuration, IDeviceService devicemaster)
+        public DeviceController(ILogger<DeviceController> logger, IConfiguration configuration, IDeviceService devicemaster)
         {
             _logger = logger;
             _configuration = configuration;
