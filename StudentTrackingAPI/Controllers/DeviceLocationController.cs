@@ -58,8 +58,16 @@ namespace MyTrackerApp.Controllers
             try
             {
                 string baseUrl = _configuration["Gpswox:BaseUrl"];
-                string hash = user.HashKey; //Uri.EscapeDataString(_configuration["Gpswox:Hash"]);
-
+                 
+                string hash=Uri.EscapeDataString(_configuration["Gpswox:Hash"]);
+                //if (!string.IsNullOrEmpty(user.HashKey))
+                //{
+                //    hash=Uri.EscapeDataString(_configuration["Gpswox:Hash"]);
+                //}
+                //else
+                //{
+                //    hash= user.HashKey;
+                //}
 
                 string url = $"{baseUrl}get_devices?user_api_hash={hash}&lang=en";
 
@@ -75,6 +83,8 @@ namespace MyTrackerApp.Controllers
                 {
                     PropertyNameCaseInsensitive = true
                 });
+                if (devices == null || devices.Count == 0)
+                    return Ok(new { Message = "No devices found for this user." });
 
                 // ✅ Enrich with address
                 foreach (var d in devices)
@@ -84,15 +94,23 @@ namespace MyTrackerApp.Controllers
                         foreach (var item in d.Items)
                         {
                             item.Address = await _geocoding.GetAddressAsync(item.Lat, item.Lng);
+
+                            // ✅ Normalize battery info
+                            if (item.Battery == null && item.Device_Data?.Battery != null)
+                                item.Battery = item.Device_Data.Battery;
                         }
                     }
                     else
                     {
                         d.Address = await _geocoding.GetAddressAsync(d.Lat, d.Lng);
+
+                        if (d.Battery == null && d.Items == null && d.Device_Data?.Battery != null)
+                            d.Battery = d.Device_Data.Battery;
                     }
                 }
 
                 return Ok(devices);
+            
             }
             catch (Exception ex)
             {
@@ -102,14 +120,6 @@ namespace MyTrackerApp.Controllers
         }
     }
 
-    public class DeviceItem
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Online { get; set; }
-        public string Time { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
-        public string Address { get; set; }
-    }
+     
+     
 }

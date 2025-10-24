@@ -47,6 +47,7 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public int Altitude { get; set; }
         public string? Power { get; set; }
         public string? Address { get; set; }
+        public double? Battery { get; set; }
         public string? Protocol { get; set; }
         public string? Driver { get; set; }
         public DeviceData Device_Data { get; set; }
@@ -55,6 +56,7 @@ namespace StudentTrackingAPI.Core.ModelDtos
     {
         public string? Imei { get; set; }
         public string? Sim_Number { get; set; }
+        public double? Battery { get; set; }
     }
     public class DeviceGroup
     {

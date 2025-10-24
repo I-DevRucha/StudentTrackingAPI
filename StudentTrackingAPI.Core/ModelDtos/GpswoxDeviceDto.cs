@@ -16,6 +16,8 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public double Lat { get; set; }
         public double Lng { get; set; }
         public string? Address { get; set; }
+        public double? Battery { get; set; }
+        public DeviceData? Device_Data { get; set; }
     }
    
    
