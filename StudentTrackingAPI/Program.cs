@@ -81,7 +81,9 @@ builder.Services.AddScoped<ICityValueMasterService, CityValueMasterService>().Ad
 builder.Services.AddScoped<IRoleMasterService, RoleMasterService>().AddScoped<RoleMasterRepository>();
 builder.Services.AddScoped<IGetWebMenuService, GetWebMenuService>().AddScoped<GetWebMenuRepository>();
 builder.Services.AddScoped<IPrincipleMasterService, PrincipleMasterService>().AddScoped<PrincipleMasterRepository>();
-builder.Services.AddScoped<IDeviceService, DeviceService>().AddScoped<DeviceRepository>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<DeviceRepository>();
+builder.Services.AddScoped<DeviceLocationRepository>();
 //builder.Services.AddHostedService<GpsTcpListener>();
 builder.Services.AddHttpClient<GeocodingService>();
 

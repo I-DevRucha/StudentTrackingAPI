@@ -13,16 +13,22 @@ namespace StudentTrackingAPI.Services.ApiServices
     public class DeviceService : IDeviceService
     {
         DeviceRepository _deviceRepository;
-        public DeviceService(DeviceRepository deviceRepository)
+        DeviceLocationRepository _deviceLocationRepository;
+        public DeviceService(DeviceRepository deviceRepository, DeviceLocationRepository deviceLocationRepository)
         {
             _deviceRepository = deviceRepository;
+            _deviceLocationRepository = deviceLocationRepository;
         }
         public async Task<IActionResult> DeviceValue(DeviceDto model)
         {
             return await _deviceRepository.DeviceValue(model);
 
         }
+        public async Task<IActionResult> DevicedataValue(GpswoxDevice model)
+        {
+            return await _deviceLocationRepository.DevicedataValue(model);
 
+        }
         public async Task<IActionResult> Get(DeviceDto model)
         {
             return await _deviceRepository.Get(model);

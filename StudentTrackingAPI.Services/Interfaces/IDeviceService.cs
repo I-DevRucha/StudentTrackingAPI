@@ -7,6 +7,7 @@ namespace StudentTrackingAPI.Services.Interfaces
     public interface IDeviceService
     {
         public Task<IActionResult> DeviceValue(DeviceDto model);
+        public Task<IActionResult> DevicedataValue(GpswoxDevice model);
         public Task<IActionResult> Get(DeviceDto model);
     }
 }

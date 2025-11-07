@@ -9,18 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace StudentTrackingAPI.Core.Repository
 {
-    public class DeviceRepository
+    
+    public class DeviceLocationRepository
     {
         private readonly DatabaseContext _dbContext;
 
-        public DeviceRepository(DatabaseContext dbContext)
+        public DeviceLocationRepository(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IActionResult> DeviceValue(DeviceDto model)
+        public async Task<IActionResult> DevicedataValue(GpswoxDevice model)
         {
             using (var connection = _dbContext.CreateConnection())
             {
@@ -71,59 +73,8 @@ namespace StudentTrackingAPI.Core.Repository
                 }
             }
         }
-        public async Task<IActionResult> DevicedataValue(GpswoxDevice model)
-        {
-            using (var connection = _dbContext.CreateConnection())
-            {
-                //Guid? userIdValue = (Guid)user.UserId;
-                try
-                {
-                    var sqlConnection = (Microsoft.Data.SqlClient.SqlConnection)connection;
-                    await sqlConnection.OpenAsync();
-                    var queryResult = await connection.QueryMultipleAsync("proc_DeviceData", SetParameter1(model), commandType: CommandType.StoredProcedure);
-                    var Model = queryResult.Read<Object>();
-                    var outcome = queryResult.ReadSingleOrDefault<Outcome>();
-                    var outcomeId = outcome?.OutcomeId ?? 0;
-                    var outcomeDetail = outcome?.OutcomeDetail ?? string.Empty;
-                    var result = new Result
-                    {
 
-                        Outcome = outcome,
-                        Data = Model,
-                        UserId = model.UserId
-                    };
-
-                    if (outcomeId == 1)
-                    {
-                        return new ObjectResult(result)
-                        {
-                            StatusCode = 200
-                        };
-                    }
-                    else if (outcomeId == 2)
-                    {
-                        // Login successful
-                        return new ObjectResult(result)
-                        {
-                            StatusCode = 409
-                        };
-                    }
-                    else
-                    {
-                        return new ObjectResult(result)
-                        {
-                            StatusCode = 400
-                        };
-                    }
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
-
-        public async Task<IActionResult> Get(DeviceDto model)
+        public async Task<IActionResult> Get(GpswoxDevice model)
         {
             using (var connection = _dbContext.CreateConnection())
             {
@@ -168,38 +119,25 @@ namespace StudentTrackingAPI.Core.Repository
             }
         }
 
-        public DynamicParameters SetParameter(DeviceDto user)
+        public DynamicParameters SetParameter(GpswoxDevice user)
         {
 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
-            parameters.Add("@device_id", user.device_id, DbType.Guid);
-            parameters.Add("@UserId", user.UserId, DbType.String);
-            parameters.Add("@Name", user.name, DbType.String);
-            parameters.Add("@lang", user.lang, DbType.String);
-            parameters.Add("@imei", user.imei, DbType.String);
-            parameters.Add("@HashKey", user.HashKey, DbType.String);
-            parameters.Add("@sim_number", user.sim_number, DbType.String);
-            parameters.Add("@status", user.status, DbType.String);
-            parameters.Add("@OutcomeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            parameters.Add("@OutcomeDetail", dbType: DbType.String, size: 4000, direction: ParameterDirection.Output);
-            return parameters;
-        }
-        public DynamicParameters SetParameter1(GpswoxDevice user)
-        {
-
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.Add("@OperationType", user.BaseModel.OperationType, DbType.String);
-            parameters.Add("@device_id", user.Id, DbType.Guid);
+            parameters.Add("@Id", user.Id, DbType.Int32);
             parameters.Add("@UserId", user.UserId, DbType.String);
             parameters.Add("@Name", user.Name, DbType.String);
-            parameters.Add("@lang", user.lang, DbType.String);
+            parameters.Add("@lang", user.Lng, DbType.String);
             parameters.Add("@imei", user.imei, DbType.String);
             parameters.Add("@HashKey", user.HashKey, DbType.String);
             parameters.Add("@sim_number", user.sim_number, DbType.String);
             parameters.Add("@status", user.status, DbType.String);
             parameters.Add("@OutcomeId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             parameters.Add("@OutcomeDetail", dbType: DbType.String, size: 4000, direction: ParameterDirection.Output);
+            if (user.DataTable != null && user.DataTable.Rows.Count > 0)
+            {
+                parameters.Add("@allGPSDetails", user.DataTable.AsTableValuedParameter("[dbo].[type_GPSDetails]"));
+            }
             return parameters;
         }
     }
