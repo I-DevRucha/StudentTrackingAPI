@@ -130,52 +130,51 @@ namespace MyTrackerApp.Controllers
                 dataTable.Columns.Add("Online", typeof(string));
                 dataTable.Columns.Add("Time", typeof(string));
                 dataTable.Columns.Add("Timestamp", typeof(string));
-                 dataTable.Columns.Add("Lat", typeof(double));
-                dataTable.Columns.Add("Lng", typeof(double));
-                dataTable.Columns.Add("Speed", typeof(int));
-                dataTable.Columns.Add("Altitude", typeof(double));
+                dataTable.Columns.Add("Lat", typeof(string));
+                dataTable.Columns.Add("Lng", typeof(string));
+                dataTable.Columns.Add("Speed", typeof(string));
+                dataTable.Columns.Add("Altitude", typeof(string));
                 dataTable.Columns.Add("Address", typeof(string));
                 dataTable.Columns.Add("Power", typeof(string));
                 dataTable.Columns.Add("Battery", typeof(string));
-                dataTable.Columns.Add("Protocol", typeof(string));
+                //dataTable.Columns.Add("Protocol", typeof(string));
                 dataTable.Columns.Add("Driver", typeof(string));
 
 
 
-                foreach (var d in devices)
+                foreach (var device in devices)
                 {
-                    double safeAltitude = 0;
-                    if (d.Altitude.HasValue)
-                        safeAltitude = d.Altitude.Value;
-
-                    dataTable.Rows.Add(
-                        d.Name ?? "",
-                        d.Online ?? "",
-                        d.Time ?? "",
-                        d.Timestamp,
-                        d.Lat,
-                        d.Lng,
-                        d.Speed  ,
-                        d.Address ?? "",
-                        safeAltitude,
-                        d.Power ?? "",
-                        d.Battery  ,
-                        d.Driver ?? ""
-
-
-                    );
+                    
+                        foreach (var item in device.Items)
+                        {
+                            dataTable.Rows.Add(
+                                device.Name ?? item.Name ?? "",
+                                item.Online ?? device.Online ?? "",
+                                item.Time ?? device.Time ?? "",
+                                item.Timestamp.ToString() ?? device.Timestamp?.ToString() ?? "",
+                                item.Lat.ToString(),
+                                item.Lng.ToString(),
+                                item.Speed.ToString(),
+                                item.Altitude?.ToString() ?? "0",
+                                item.Address ?? device.Address ?? "",
+                                item.Power ?? device.Power ?? "",
+                                item.Battery?.ToString() ?? device.Battery?.ToString() ?? "",
+                                item.Driver ?? device.Driver ?? ""
+                            );
+                        }
+                    
                 }
+
 
                 // ✅ Prepare DTO for DB insert
                 var user = new GpswoxDevice
                 {
-                    DataTable = dataTable,
-                    BaseModel = new BaseModel
+                   BaseModel = new BaseModel
                     {
                         OperationType = "InsertGpsdata"
                     }
                 };
-
+                user.DataTable = dataTable;
                 // ✅ Insert into DB
                 var createduser = await _devicemaster.DevicedataValue(user);
 
