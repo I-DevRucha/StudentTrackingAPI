@@ -12,6 +12,7 @@ namespace StudentTrackingAPI.Core.ModelDtos
     {
         public BaseModel? BaseModel { get; set; }
         public int? Id { get; set; }
+        public int? device_id  { get; set; }
         public string? UserId { get; set; }
         public string? UserName { get; set; }
         public string? HashKey { get; set; }
@@ -34,6 +35,12 @@ namespace StudentTrackingAPI.Core.ModelDtos
         public string? lang { get; set; }
         public string? Power { get; set; }
         public string? Driver { get; set; }
+        public string? from_date { get; set; }
+        public string? to_date { get; set; }
+        public string? from_time { get; set; }
+        public string? to_time { get; set; }
+
+        public bool? snap_to_road { get; set; }
         public DeviceData? Device_Data { get; set; }
         public Parameters? Parameters { get; set; }
         public DataTable? DataTable { get; set; }
