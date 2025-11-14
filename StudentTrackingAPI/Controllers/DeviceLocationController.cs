@@ -192,19 +192,13 @@ namespace MyTrackerApp.Controllers
             }
         }
         [HttpGet("GetDeviceHistory")]
-        public async Task<IActionResult> GetDeviceHistory(string hash,
-    int device_id,
-    string from_date,
-    string from_time,
-    string to_date,
-    string to_time,
-    bool snap_to_road = true,
-    string lang = "en")
+        public async Task<IActionResult> GetDeviceHistory( int device_id,string from_date,string from_time,string to_date,
+                                                            string to_time, bool snap_to_road = true, string lang = "en")
         {
             try
             {
                 string baseUrl = _configuration["Gpswox:BaseUrl"]; // "https://api.gpswox.com/api/"
-                  hash = Uri.EscapeDataString(_configuration["Gpswox:Hash"]);
+                string hash = Uri.EscapeDataString(_configuration["Gpswox:Hash"]);
 
                 string url = $"{baseUrl}get_history?" +
                              $"user_api_hash={hash}" +
@@ -231,6 +225,7 @@ namespace MyTrackerApp.Controllers
 
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 var data = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
+                
                 return Content(jsonResponse, "application/json");
                 //return Ok(new
                 //{
@@ -249,6 +244,7 @@ namespace MyTrackerApp.Controllers
             }
         }
 
+         
         //[HttpGet("GetDeviceHistory")]
         //public async Task<IActionResult> GetDeviceHistory([FromQuery] GpswoxDevice user)
         //{
