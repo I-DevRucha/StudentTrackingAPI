@@ -137,7 +137,7 @@ namespace MyTrackerApp.Controllers
                 dataTable.Columns.Add("Address", typeof(string));
                 dataTable.Columns.Add("Power", typeof(string));
                 dataTable.Columns.Add("Battery", typeof(string));
-                //dataTable.Columns.Add("Protocol", typeof(string));
+                dataTable.Columns.Add("Protocol", typeof(string));
                 dataTable.Columns.Add("Driver", typeof(string));
 
 
